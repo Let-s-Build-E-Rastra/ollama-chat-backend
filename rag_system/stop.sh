@@ -7,7 +7,7 @@ set -e
 echo "🛑 Stopping Multi-Agent RAG System..."
 
 # Stop all services
-docker-compose down
+sudo docker compose down
 
 echo "✅ All services stopped."
 echo ""
