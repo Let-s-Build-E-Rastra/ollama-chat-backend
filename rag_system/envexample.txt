@@ -1,0 +1,30 @@
+# MongoDB Configuration
+MONGODB_URL=mongodb://localhost:27017
+MONGODB_DATABASE=rag_system
+
+# Qdrant Configuration
+QDRANT_URL=http://localhost:6333
+QDRANT_API_KEY=
+
+# Ollama Configuration
+OLLAMA_URL=http://localhost:11434
+OLLAMA_DEFAULT_CHAT_MODEL=llama3.1
+OLLAMA_DEFAULT_EMBEDDING_MODEL=nomic-embed-text
+
+# Security
+SECRET_KEY=your-secret-key-here
+API_KEY_HASH_ROUNDS=12
+
+# Application Settings
+APP_NAME="Multi-Agent RAG System"
+APP_VERSION=1.0.0
+DEBUG=false
+LOG_LEVEL=INFO
+
+# RAG Configuration
+MAX_UPLOAD_SIZE=52428800
+DEFAULT_CHUNK_SIZE=512
+DEFAULT_CHUNK_OVERLAP=50
+MAX_RETRIEVAL_RESULTS=20
+RERANKER_TOP_K=10
+MIN_RELEVANCE_SCORE=0.7

@@ -25,19 +25,18 @@ fi
 
 # Pull required Docker images
 echo "📥 Pulling Docker images..."
-docker-compose pull
+sudo docker compose pull
 
 # Start MongoDB and Qdrant first
 echo "🗄️  Starting databases..."
-docker-compose up -d mongodb qdrant
-
+sudo docker compose up -d mongodb qdrant
 # Wait for databases to be ready
 echo "⏳ Waiting for databases to be ready..."
 sleep 10
 
 # Start Ollama
 echo "🧠 Starting Ollama..."
-docker-compose up -d ollama
+sudo docker compose up -d ollama
 
 # Wait for Ollama to be ready
 echo "⏳ Waiting for Ollama to be ready..."
@@ -50,7 +49,7 @@ docker exec rag_ollama ollama pull llama3.1 || true
 
 # Start the application
 echo "🚀 Starting FastAPI application..."
-docker-compose up -d app
+sudo docker compose up -d app
 
 # Wait for app to be ready
 echo "⏳ Waiting for application to be ready..."
@@ -58,7 +57,7 @@ sleep 10
 
 # Check if everything is running
 echo "🔍 Checking service status..."
-docker-compose ps
+sudo docker compose ps
 
 echo ""
 echo "✅ Multi-Agent RAG System is starting up!"
