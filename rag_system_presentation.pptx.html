@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State-of-the-Art Open-Source Multi-Agent RAG System</title>
+    <script src="https://statics.moonshot.cn/kimi-ppt/html-gen/static/tailwindcss@4_0805.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Chiron+Hei+HK:wght@400;700&family=Hedvig+Letters+Sans:wght@400;700&family=Quattrocento+Sans:wght@400;700&family=Coda:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdmirror.com/npm/mathjax@3.2.2/es5/tex-svg.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .ppt-slide {
+                @apply relative w-[1280px] h-[720px] mx-auto p-[40px] box-border overflow-hidden mb-[40px];
+            }
+        }
+    </style>
+    <style>
+        body {
+            color: #E2E8F0;
+            font-family: 'Quattrocento Sans', sans-serif;
+        }
+        h1, h2, h3 {
+            font-family: 'Chiron Hei HK', sans-serif;
+        }
+        .font-display {
+            font-family: 'Hedvig Letters Sans', sans-serif;
+        }
+        .font-body {
+            font-family: 'Quattrocento Sans', sans-serif;
+        }
+        .font-caption {
+            font-family: 'Coda', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 py-8">
+    
+    <!-- Slide 1: Cover -->
+    <div class="ppt-slide !bg-[#1A202C]" type="cover">
+        <img src="cover_image.png" alt="Cover" class="absolute inset-0 w-full h-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/95 via-[#1A202C]/85 to-[#4A5568]/70"></div>
+        <div class="relative h-full flex flex-col justify-center items-center text-center z-10">
+            <div class="mb-6">
+                <div class="inline-block px-6 py-2 bg-[#4FD1C5]/20 border-2 border-[#4FD1C5] rounded-full mb-6">
+                    <span class="text-[#4FD1C5] font-caption text-xl font-bold tracking-widest">PRODUCTION-GRADE ARCHITECTURE</span>
+                </div>
+            </div>
+            <h1 class="text-6xl font-bold text-[#E2E8F0] mb-6 leading-tight font-display">
+                State-of-the-Art<br/>Open-Source Multi-Agent<br/>RAG System
+            </h1>
+            <div class="w-32 h-1 bg-[#4FD1C5] mx-auto mb-6"></div>
+            <p class="text-2xl text-[#A0AEC0] font-body max-w-4xl">
+                Production-Grade Retrieval-Augmented Generation Architecture<br/>
+                <span class="text-[#4FD1C5] font-semibold">100% Open Source • Multi-Tenant • High-Precision</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Table of Contents -->
+    <div class="ppt-slide !bg-[#1A202C]" type="table_of_contents">
+        <div class="mb-8">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">PRESENTATION ROADMAP</p>
+            <h2 class="text-5xl font-bold text-[#E2E8F0] font-display">System Overview</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-6 mt-12">
+            <div class="bg-[#4A5568]/30 p-6 rounded-lg border-l-4 border-[#4FD1C5] hover:bg-[#4A5568]/50 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-lg bg-[#4FD1C5] flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display shrink-0">01</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] mb-2 font-display">System Foundation</h3>
+                        <p class="text-base text-[#A0AEC0] leading-relaxed">Defining objectives, constraints, and architectural principles</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/30 p-6 rounded-lg border-l-4 border-[#4FD1C5] hover:bg-[#4A5568]/50 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-lg bg-[#4FD1C5] flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display shrink-0">02</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] mb-2 font-display">Architecture &amp; Domain Design</h3>
+                        <p class="text-base text-[#A0AEC0] leading-relaxed">System flow, core concepts, and component relationships</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/30 p-6 rounded-lg border-l-4 border-[#4FD1C5] hover:bg-[#4A5568]/50 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-lg bg-[#4FD1C5] flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display shrink-0">03</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] mb-2 font-display">Data Layer Design</h3>
+                        <p class="text-base text-[#A0AEC0] leading-relaxed">MongoDB schema, Qdrant strategy, and vector management</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/30 p-6 rounded-lg border-l-4 border-[#4FD1C5] hover:bg-[#4A5568]/50 transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-lg bg-[#4FD1C5] flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display shrink-0">04</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] mb-2 font-display">RAG Pipeline Implementation</h3>
+                        <p class="text-base text-[#A0AEC0] leading-relaxed">Semantic search, preprocessing, chunking, and retrieval</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/30 p-6 rounded-lg border-l-4 border-[#4FD1C5] hover:bg-[#4A5568]/50 transition-all col-span-2">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-lg bg-[#4FD1C5] flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display shrink-0">05</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] mb-2 font-display">Quality Assurance &amp; Deliverables</h3>
+                        <p class="text-base text-[#A0AEC0] leading-relaxed">Security, non-goals, quality bar, and final deliverables</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Chapter 1 -->
+    <div class="ppt-slide !bg-[#1A202C]" type="chapter">
+        <img src="cover_image.png" alt="Chapter" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#1A202C]/80 to-[#4A5568]/60"></div>
+        <div class="relative h-full flex items-center z-10">
+            <div class="max-w-3xl">
+                <div class="text-8xl font-bold text-[#4FD1C5]/30 mb-4 font-display leading-none">01</div>
+                <h2 class="text-6xl font-bold text-[#E2E8F0] mb-6 font-display leading-tight">System Foundation</h2>
+                <div class="w-48 h-2 bg-[#4FD1C5] mb-6"></div>
+                <p class="text-3xl text-[#A0AEC0] font-body leading-relaxed">
+                    Defining objectives, constraints,<br/>and architectural principles
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: System Objective -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-6">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">SYSTEM FOUNDATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">System Objective & Core Purpose</h2>
+        </div>
+        <div class="space-y-5">
+            <div class="grid grid-cols-3 gap-5">
+                <div class="col-span-2 bg-[#4A5568]/20 p-6 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Primary Goal</h3>
+                    <p class="text-lg text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                        Build a <strong class="text-[#4FD1C5]">production-grade, multi-agent, multi-tenant Retrieval-Augmented Generation (RAG) system</strong> using only open-source technologies. The system prioritizes <span class="bg-[#4FD1C5]/20" style="color: #4FD1C5;">retrieval quality, factual grounding, and isolation</span> over raw generation capabilities.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="flex items-center gap-3 bg-[#1A202C]/50 p-3 rounded">
+                            <i class="fas fa-users text-[#4FD1C5] text-xl"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Multiple Independent Agents</p>
+                                <p class="text-sm text-[#A0AEC0]">Each with isolated RAG knowledge space</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-[#1A202C]/50 p-3 rounded">
+                            <i class="fas fa-server text-[#4FD1C5] text-xl"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Shared Local LLM Runtime</p>
+                                <p class="text-sm text-[#A0AEC0]">Ollama-powered with zero paid APIs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-[#1A202C]/50 p-3 rounded">
+                            <i class="fas fa-search text-[#4FD1C5] text-xl"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">High-Precision Semantic Search</p>
+                                <p class="text-sm text-[#A0AEC0]">Advanced embedding and reranking</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-[#1A202C]/50 p-3 rounded">
+                            <i class="fas fa-globe text-[#4FD1C5] text-xl"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Multilingual Understanding</p>
+                                <p class="text-sm text-[#A0AEC0]">Cross-language document processing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-5">
+                    <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-l-4 border-[#4FD1C5]">
+                        <h4 class="text-lg font-bold text-[#4FD1C5] mb-3 font-display">Design Priorities</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-[#4FD1C5] rounded-full"></div>
+                                <p class="text-base text-[#E2E8F0]">Retrieval Quality First</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-[#4FD1C5] rounded-full"></div>
+                                <p class="text-base text-[#E2E8F0]">Factual Grounding</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-[#4FD1C5] rounded-full"></div>
+                                <p class="text-base text-[#E2E8F0]">Complete Agent Isolation</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-[#4FD1C5] rounded-full"></div>
+                                <p class="text-base text-[#E2E8F0]">Zero Hallucination Tolerance</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">System Capabilities</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                                <div class="text-3xl font-bold text-[#4FD1C5] font-display">100%</div>
+                                <div class="text-sm text-[#A0AEC0] mt-1">Open Source</div>
+                            </div>
+                            <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                                <div class="text-3xl font-bold text-[#4FD1C5] font-display">Multi</div>
+                                <div class="text-sm text-[#A0AEC0] mt-1">Agent & Tenant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Hard Constraints -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-6">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">SYSTEM FOUNDATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Hard Constraints & Technology Stack</h2>
+        </div>
+        <p class="text-lg text-[#A0AEC0] mb-6 font-body">
+            <strong class="text-[#E2E8F0]">Non-negotiable technical constraints</strong> that define the system architecture and ensure consistency, maintainability, and open-source integrity.
+        </p>
+        <div class="grid grid-cols-3 gap-5 mb-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fab fa-python text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">FastAPI</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">High-performance Python web framework for the backend API gateway.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm text-[#4FD1C5] font-semibold mb-1">Key Features</p>
+                    <p class="text-sm text-[#A0AEC0]">Async/await support, automatic API docs, type validation</p>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-database text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">MongoDB</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">Document database for metadata, agent configuration, and file tracking.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm text-[#4FD1C5] font-semibold mb-1">Key Features</p>
+                    <p class="text-sm text-[#A0AEC0]">Flexible schema, scalability, rich query language</p>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-vector-square text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Qdrant</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">High-performance vector database for semantic search and retrieval.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm text-[#4FD1C5] font-semibold mb-1">Key Features</p>
+                    <p class="text-sm text-[#A0AEC0]">Rust-based, filtering, distributed deployment</p>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-brain text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Ollama</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">Local LLM runtime for model serving and management.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm text-[#4FD1C5] font-semibold mb-1">Key Features</p>
+                    <p class="text-sm text-[#A0AEC0]">Local deployment, multiple models, REST API</p>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                <h3 class="text-xl font-bold text-[#E2E8F0] mb-4 font-display">Additional Constraints</h3>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-lock text-[#4FD1C5] text-lg mt-1"></i>
+                        <div>
+                            <p class="text-base font-semibold text-[#E2E8F0]">Authentication: Hashed API Keys</p>
+                            <p class="text-sm text-[#A0AEC0]">Secure key management with one-way hashing</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-ban text-[#4FD1C5] text-lg mt-1"></i>
+                        <div>
+                            <p class="text-base font-semibold text-[#E2E8F0]">No Paid APIs or SaaS</p>
+                            <p class="text-sm text-[#A0AEC0]">Zero dependency on commercial AI services</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-times-circle text-[#4FD1C5] text-lg mt-1"></i>
+                        <div>
+                            <p class="text-base font-semibold text-[#E2E8F0]">No Fine-Tuning Pipelines</p>
+                            <p class="text-sm text-[#A0AEC0]">Focus on retrieval quality over model customization</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-cloud text-[#4FD1C5] text-lg mt-1"></i>
+                        <div>
+                            <p class="text-base font-semibold text-[#E2E8F0]">Stateless API Services</p>
+                            <p class="text-sm text-[#A0AEC0]">Horizontal scaling and fault tolerance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Chapter 2 -->
+    <div class="ppt-slide !bg-[#1A202C]" type="chapter">
+        <img src="cover_image.png" alt="Chapter" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#1A202C]/80 to-[#4A5568]/60"></div>
+        <div class="relative h-full flex items-center justify-end z-10">
+            <div class="max-w-3xl text-right">
+                <div class="text-8xl font-bold text-[#4FD1C5]/30 mb-4 font-display leading-none">02</div>
+                <h2 class="text-6xl font-bold text-[#E2E8F0] mb-6 font-display leading-tight">Architecture &<br/>Domain Design</h2>
+                <div class="w-48 h-2 bg-[#4FD1C5] mb-6 ml-auto"></div>
+                <p class="text-3xl text-[#A0AEC0] font-body leading-relaxed">
+                    System flow, core concepts,<br/>and component relationships
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: High-Level Architecture -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">ARCHITECTURE & DOMAIN DESIGN</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">High-Level System Architecture</h2>
+        </div>
+        <div class="grid grid-cols-5 gap-6">
+            <div class="col-span-3 flex items-center justify-center bg-[#4A5568]/10 rounded-lg p-4 border border-[#4FD1C5]/30">
+                <img src="system_architecture_flow.png" alt="System Architecture Flow" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="col-span-2 space-y-3">
+                <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                    <h3 class="text-lg font-bold text-[#4FD1C5] mb-3 font-display">Pipeline Flow</h3>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">1</span>
+                            <span>Client Request with API Key</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">2</span>
+                            <span>FastAPI Gateway Authentication</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">3</span>
+                            <span>Agent Resolver & Routing</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">4</span>
+                            <span>Query Understanding & Expansion</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">5</span>
+                            <span>Semantic + Hybrid Retrieval</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">6</span>
+                            <span>Reranking with Cross-Encoders</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">7</span>
+                            <span>Context Assembly & Formatting</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-base text-[#E2E8F0]">
+                            <span class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">8</span>
+                            <span>LLM Generation (Ollama)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">Architecture Principles</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Modular Design:</strong> Each component operates independently</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Pipeline-Oriented:</strong> Clear data flow from query to response</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Quality-Focused:</strong> Multiple enhancement stages</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Scalable:</strong> Stateless services enable horizontal scaling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Core Domain Concepts -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-4">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">ARCHITECTURE & DOMAIN DESIGN</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Core Domain Concepts: Agent & API Keys</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#E2E8F0] font-display">Agent Concept</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">
+                    An <strong class="text-[#E2E8F0]">Agent</strong> represents one business-specific chatbot with <span class="bg-[#4FD1C5]/20" style="color: #4FD1C5;">strict isolation at the retrieval layer</span>.
+                </p>
+                <div class="bg-[#1A202C]/50 p-4 rounded-lg mb-3">
+                    <h4 class="text-base font-bold text-[#4FD1C5] mb-3 font-display">Agent Properties</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-cog text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Strict Role Definition</p>
+                                <p class="text-sm text-[#A0AEC0]">System prompt defines agent behavior and boundaries</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-brain text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Specified Ollama Chat Model</p>
+                                <p class="text-sm text-[#A0AEC0]">Configurable LLM per agent (Llama 3.1, Qwen 2.5, etc.)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-layer-group text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Specified Embedding Model</p>
+                                <p class="text-sm text-[#A0AEC0]">High-quality embeddings (nomic-embed-text, bge-m3, etc.)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-shield-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Isolated RAG Knowledge Base</p>
+                                <p class="text-sm text-[#A0AEC0]">Dedicated vector space in Qdrant per agent</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-key text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Multiple API Keys</p>
+                                <p class="text-sm text-[#A0AEC0]">One-to-many relationship between agent and keys</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-history text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Configurable Chat History</p>
+                                <p class="text-sm text-[#A0AEC0]">Customizable conversation memory length</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-key text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[#E2E8F0] font-display">API Key Management</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">
+                        Secure authentication with <strong class="text-[#E2E8F0]">complete isolation</strong> between agents.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <h4 class="text-base font-bold text-[#4FD1C5] mb-3 font-display">Key Properties</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-hashtag text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Secure Hashes Only</p>
+                                    <p class="text-sm text-[#A0AEC0]">One-way hashing (bcrypt/argon2)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-infinity text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">No Expiration</p>
+                                    <p class="text-sm text-[#A0AEC0]">Keys remain valid until explicitly revoked</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-trash-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Soft Delete Revocation</p>
+                                    <p class="text-sm text-[#A0AEC0]">Revoked keys are marked, not removed</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-ban text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Request Rejection</p>
+                                    <p class="text-sm text-[#A0AEC0]">Revoked keys are immediately blocked</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border border-[#4FD1C5]">
+                    <h4 class="text-base font-bold text-[#4FD1C5] mb-3 font-display">Isolation Guarantee</h4>
+                    <p class="text-base text-[#E2E8F0] font-body">
+                        <strong>Agents are completely isolated at the retrieval layer.</strong> One agent's documents and vectors are never accessible to another agent, ensuring data privacy and security in multi-tenant deployments.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: RAG Documents -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">ARCHITECTURE & DOMAIN DESIGN</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">RAG Documents & Knowledge Isolation</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="grid grid-cols-3 gap-5">
+                <div class="col-span-2 bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Document Management Strategy</h3>
+                    <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                        Each document belongs to <strong class="text-[#4FD1C5]">exactly one agent</strong>, ensuring complete isolation at the retrieval layer. This design prevents cross-contamination and maintains data privacy.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i class="fas fa-cut text-[#4FD1C5] text-xl"></i>
+                                <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Document Chunking</h4>
+                            </div>
+                            <p class="text-base text-[#A0AEC0] font-body mb-2">Meaning-aware chunking preserves semantic structure:</p>
+                            <div class="space-y-1 text-sm text-[#E2E8F0]">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>Section headers → Paragraphs → Lists</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>200-400 tokens per chunk</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>20-40 token overlap</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i class="fas fa-layer-group text-[#4FD1C5] text-xl"></i>
+                                <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Embedding Process</h4>
+                            </div>
+                            <p class="text-base text-[#A0AEC0] font-body mb-2">Chunks are embedded using the agent's configured model:</p>
+                            <div class="space-y-1 text-sm text-[#E2E8F0]">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>High-quality open-source models</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>Normalized embeddings</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                                    <span>Stored in Qdrant with metadata</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                        <h4 class="text-lg font-bold text-[#4FD1C5] mb-3 font-display">Vector Storage</h4>
+                        <p class="text-base text-[#E2E8F0] font-body mb-3">
+                            Documents are stored in <strong>Qdrant</strong> with agent-isolated collections:
+                        </p>
+                        <div class="bg-[#1A202C]/50 p-3 rounded">
+                            <p class="text-sm font-mono text-[#4FD1C5] mb-1">Collection Name</p>
+                            <p class="text-sm font-mono text-[#E2E8F0] bg-[#4A5568]/30 p-2 rounded">rag_agent_&lt;agent_id&gt;</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#A0AEC0]/30">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">Vector Payload</h4>
+                        <div class="bg-[#1A202C]/50 p-3 rounded font-mono text-xs text-[#E2E8F0] leading-tight">
+                            <div>{</div>
+                            <div class="ml-2 text-[#4FD1C5]">"agent_id": "&lt;ObjectId&gt;",</div>
+                            <div class="ml-2 text-[#4FD1C5]">"file_id": "&lt;ObjectId&gt;",</div>
+                            <div class="ml-2 text-[#4FD1C5]">"chunk_index": &lt;number&gt;,</div>
+                            <div class="ml-2 text-[#4FD1C5]">"section": "&lt;heading&gt;",</div>
+                            <div class="ml-2 text-[#4FD1C5]">"source": "&lt;filename&gt;"</div>
+                            <div>}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                <h3 class="text-xl font-bold text-[#4FD1C5] mb-4 font-display">Safe Deletion Process</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold font-display">1</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Mark as Deleted</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">File metadata marked as deleted in MongoDB for audit trail</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold font-display">2</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Remove Vectors</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">All vectors removed from Qdrant using file_id filter</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold font-display">3</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Preserve Metadata</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">File metadata retained for audit and compliance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Chapter 3 -->
+    <div class="ppt-slide !bg-[#1A202C]" type="chapter">
+        <img src="cover_image.png" alt="Chapter" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#1A202C]/80 to-[#4A5568]/60"></div>
+        <div class="relative h-full flex items-center z-10">
+            <div class="max-w-3xl">
+                <div class="text-8xl font-bold text-[#4FD1C5]/30 mb-4 font-display leading-none">03</div>
+                <h2 class="text-6xl font-bold text-[#E2E8F0] mb-6 font-display leading-tight">Data Layer Design</h2>
+                <div class="w-48 h-2 bg-[#4FD1C5] mb-6"></div>
+                <p class="text-3xl text-[#A0AEC0] font-body leading-relaxed">
+                    MongoDB schema, Qdrant strategy,<br/>and vector management
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: MongoDB Schema -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-4">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">DATA LAYER DESIGN</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">MongoDB Schema: Collections & Structure</h2>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <div class="bg-[#4A5568]/20 p-4 rounded-lg border-2 border-[#4FD1C5] flex flex-col">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-[#1A202C] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">agents</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3 flex-grow">Core agent identity, configuration, and lifecycle management.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded mb-3 flex-grow">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Key Fields</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">_id:</span> ObjectId</div>
+                        <div><span class="text-[#A0AEC0]">name:</span> String (unique)</div>
+                        <div><span class="text-[#A0AEC0]">description:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">system_prompt:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">chat_model:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">embedding_model:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">is_active:</span> Boolean</div>
+                        <div><span class="text-[#A0AEC0]">created_at:</span> DateTime</div>
+                    </div>
+                </div>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Indexes</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">•</span> Unique: { name: 1 }</div>
+                        <div><span class="text-[#A0AEC0]">•</span> Standard: { is_active: 1 }</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-4 rounded-lg border-2 border-[#4FD1C5] flex flex-col">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-key text-[#1A202C] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">api_keys</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3 flex-grow">Secure API key authentication and agent mapping.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded mb-3 flex-grow">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Key Fields</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">_id:</span> ObjectId</div>
+                        <div><span class="text-[#A0AEC0]">key_hash:</span> String (bcrypt)</div>
+                        <div><span class="text-[#A0AEC0]">agent_id:</span> ObjectId → agents</div>
+                        <div><span class="text-[#A0AEC0]">name:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">is_active:</span> Boolean</div>
+                        <div><span class="text-[#A0AEC0]">created_at:</span> DateTime</div>
+                        <div><span class="text-[#A0AEC0]">last_used:</span> DateTime</div>
+                    </div>
+                </div>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Indexes</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">•</span> Unique: { key_hash: 1 }</div>
+                        <div><span class="text-[#A0AEC0]">•</span> Standard: { agent_id: 1, is_active: 1 }</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-4 rounded-lg border-2 border-[#4FD1C5] flex flex-col">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-[#1A202C] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">files</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3 flex-grow">RAG document metadata, chunk tracking, and deletion lifecycle.</p>
+                <div class="bg-[#1A202C]/50 p-3 rounded mb-3 flex-grow">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Key Fields</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">_id:</span> ObjectId</div>
+                        <div><span class="text-[#A0AEC0]">agent_id:</span> ObjectId → agents</div>
+                        <div><span class="text-[#A0AEC0]">filename:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">content_type:</span> String</div>
+                        <div><span class="text-[#A0AEC0]">size:</span> Number</div>
+                        <div><span class="text-[#A0AEC0]">chunk_count:</span> Number</div>
+                        <div><span class="text-[#A0AEC0]">is_deleted:</span> Boolean</div>
+                        <div><span class="text-[#A0AEC0]">created_at:</span> DateTime</div>
+                    </div>
+                </div>
+                <div class="bg-[#1A202C]/50 p-3 rounded">
+                    <p class="text-sm font-bold text-[#4FD1C5] mb-2 font-display">Indexes</p>
+                    <div class="space-y-1 text-sm text-[#E2E8F0]">
+                        <div><span class="text-[#A0AEC0]">•</span> Standard: { agent_id: 1, is_deleted: 1 }</div>
+                        <div><span class="text-[#A0AEC0]">•</span> Standard: { created_at: -1 }</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+            <p class="text-base text-[#E2E8F0] font-body">
+                <strong class="text-[#4FD1C5]">Schema Design Principles:</strong> The schema enables multi-tenancy through agent_id foreign keys, ensures isolation via unique constraints, and supports soft deletion for data integrity and audit trails.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 12: Qdrant Strategy -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">DATA LAYER DESIGN</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Qdrant Vector Database Strategy</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5] flex flex-col">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Agent-Isolated Collections</h3>
+                <p class="text-base text-[#E2E8F0] leading-relaxed mb-3 font-body flex-grow">
+                    Each agent has a <strong class="text-[#4FD1C5]">dedicated vector collection</strong> ensuring complete isolation and preventing cross-agent retrieval.
+                </p>
+                <div class="bg-[#1A202C]/50 p-4 rounded-lg mb-3">
+                    <h4 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">Collection Naming</h4>
+                    <div class="bg-[#4A5568]/30 p-3 rounded font-mono text-base text-[#4FD1C5] mb-2">rag_agent_&lt;agent_id&gt;</div>
+                    <p class="text-sm text-[#A0AEC0] font-body">Example: <span class="text-[#4FD1C5]">rag_agent_507f1f77bcf86cd799439011</span></p>
+                </div>
+                <div class="bg-[#1A202C]/50 p-4 rounded-lg flex-grow">
+                    <h4 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">Benefits</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-shield-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Security</p>
+                                <p class="text-sm text-[#A0AEC0]">Complete data isolation between agents</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-tachometer-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Performance</p>
+                                <p class="text-sm text-[#A0AEC0]">Smaller collections = faster search</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-expand-arrows-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Scalability</p>
+                                <p class="text-sm text-[#A0AEC0]">Distribute across nodes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Vector Payload Schema</h3>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Every vector point includes rich metadata for filtering and attribution:</p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg font-mono text-sm text-[#E2E8F0] leading-snug">
+                        <div>{</div>
+                        <div class="ml-2 text-[#4FD1C5]">"agent_id": "&lt;ObjectId&gt;",</div>
+                        <div class="ml-2 text-[#4FD1C5]">"file_id": "&lt;ObjectId&gt;",</div>
+                        <div class="ml-2 text-[#4FD1C5]">"chunk_index": &lt;number&gt;,</div>
+                        <div class="ml-2 text-[#4FD1C5]">"section": "&lt;heading&gt;",</div>
+                        <div class="ml-2 text-[#4FD1C5]">"source": "&lt;filename&gt;"</div>
+                        <div>}</div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Filtering Capabilities</h3>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Payload enables precise filtering during retrieval:</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-[#1A202C]/50 p-3 rounded flex items-center gap-2">
+                            <i class="fas fa-filter text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Filter by file_id</span>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded flex items-center gap-2">
+                            <i class="fas fa-filter text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Filter by section</span>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded flex items-center gap-2">
+                            <i class="fas fa-filter text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Multiple file_ids</span>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded flex items-center gap-2">
+                            <i class="fas fa-filter text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Exclusion filters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-lightbulb text-[#4FD1C5] text-xl mt-1 shrink-0"></i>
+                <div>
+                    <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">Implementation Notes</h4>
+                    <p class="text-base text-[#E2E8F0] font-body">
+                        Collections are created dynamically when an agent is created. Vector dimensions must match the agent's embedding model. Payload indices should be created on file_id and section for optimal performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Chapter 4 -->
+    <div class="ppt-slide !bg-[#1A202C]" type="chapter">
+        <img src="cover_image.png" alt="Chapter" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/90 via-[#1A202C]/80 to-[#4A5568]/60"></div>
+        <div class="relative h-full flex items-center justify-end z-10">
+            <div class="max-w-3xl text-right">
+                <div class="text-8xl font-bold text-[#4FD1C5]/30 mb-4 font-display leading-none">04</div>
+                <h2 class="text-6xl font-bold text-[#E2E8F0] mb-6 font-display leading-tight">RAG Pipeline<br/>Implementation</h2>
+                <div class="w-48 h-2 bg-[#4FD1C5] mb-6 ml-auto"></div>
+                <p class="text-3xl text-[#A0AEC0] font-body leading-relaxed">
+                    Semantic search, preprocessing,<br/>chunking, and retrieval
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Embedding Models -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Embedding Models & Quality Standards</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Approved Embedding Models</h3>
+                <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                    Only <strong class="text-[#4FD1C5]">high-quality, open-source embedding models</strong> are supported to ensure accurate semantic retrieval.
+                </p>
+                <div class="space-y-3">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">nomic-embed-text</h4>
+                            <span class="px-3 py-1 bg-[#4FD1C5] text-[#1A202C] rounded-full text-sm font-bold font-caption">DEFAULT</span>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">High-quality general-purpose embeddings with 768 dimensions</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">bge-m3</h4>
+                            <span class="px-3 py-1 bg-[#A0AEC0]/30 text-[#E2E8F0] rounded-full text-sm font-bold font-caption">MULTILINGUAL</span>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Supports 100+ languages with 1024 dimensions</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">e5-large</h4>
+                            <span class="px-3 py-1 bg-[#A0AEC0]/30 text-[#E2E8F0] rounded-full text-sm font-bold font-caption">HIGH-PRECISION</span>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Large model with 1024 dimensions for maximum accuracy</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">gte-large</h4>
+                            <span class="px-3 py-1 bg-[#A0AEC0]/30 text-[#E2E8F0] rounded-full text-sm font-bold font-caption">BALANCED</span>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Balanced performance with 1024 dimensions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Model Selection Criteria</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">1</div>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Open Source Only</p>
+                                <p class="text-sm text-[#A0AEC0]">Must be freely available and self-hostable</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">2</div>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Proven Quality</p>
+                                <p class="text-sm text-[#A0AEC0]">High scores on MTEB and other benchmarks</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">3</div>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Production Ready</p>
+                                <p class="text-sm text-[#A0AEC0]">Stable, well-documented, and actively maintained</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">4</div>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Ollama Compatible</p>
+                                <p class="text-sm text-[#A0AEC0]">Available through Ollama for easy deployment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Critical Rules</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-ban text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Never Use Chat Models:</strong> Chat models must NEVER be used for embeddings</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-cogs text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Configurable per Agent:</strong> Each agent can use a different embedding model</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-ruler-combined text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>All Normalized:</strong> All embeddings must be normalized for cosine similarity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Text Preprocessing -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Text Preprocessing & Semantic Chunking</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Mandatory Preprocessing</h3>
+                <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                    Before embedding, text undergoes <strong class="text-[#4FD1C5]">mandatory preprocessing</strong> to ensure quality and consistency.
+                </p>
+                <div class="space-y-3">
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-compress-alt text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Normalize Whitespace</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Remove extra spaces, tabs, and newlines while preserving paragraph structure</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-header text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Preserve Structure</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Keep headings, subheadings, lists, and semantic elements intact</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-eraser text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Remove Noise</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Strip boilerplate, navigation elements, and non-content artifacts</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-sitemap text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Retain Semantics</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Maintain the logical flow and meaning of the original content</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Meaning-Aware Chunking</h3>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">
+                        Chunking is <strong class="text-[#E2E8F0]">meaning-aware</strong>, not fixed-size. It respects document structure and semantic boundaries.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg mb-3">
+                        <h4 class="text-base font-bold text-[#4FD1C5] mb-3 font-display">Chunking Priority</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">1</div>
+                                <span class="text-base text-[#E2E8F0]">Section Headers</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-[#A0AEC0] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">2</div>
+                                <span class="text-base text-[#E2E8F0]">Paragraphs</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-[#A0AEC0] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">3</div>
+                                <span class="text-base text-[#E2E8F0]">Lists</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-[#A0AEC0] rounded-full flex items-center justify-center text-[#1A202C] font-bold shrink-0">4</div>
+                                <span class="text-base text-[#E2E8F0]">Token Window Fallback</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Chunking Constraints</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                            <div class="text-2xl font-bold text-[#4FD1C5] font-display">200-400</div>
+                            <div class="text-sm text-[#A0AEC0] mt-1">Tokens per chunk</div>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                            <div class="text-2xl font-bold text-[#4FD1C5] font-display">20-40</div>
+                            <div class="text-sm text-[#A0AEC0] mt-1">Token overlap</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: Query Understanding -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Query Understanding & Expansion</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Query Enhancement Process</h3>
+                <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                    Before retrieval, user queries undergo <strong class="text-[#4FD1C5]">automatic enhancement</strong> to improve recall and accuracy without user awareness.
+                </p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-10 h-10 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-lg font-display">1</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Rewrite</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Queries are rewritten for clarity, correcting grammar, and improving structure</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-10 h-10 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-lg font-display">2</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Expand</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Generate 2-4 semantic variants covering different interpretations</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-10 h-10 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-lg font-display">3</div>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Normalize</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Expand abbreviations, acronyms, and synonyms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Example: Query Enhancement</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Original Query</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded font-mono text-sm text-[#E2E8F0]">"How to config SSL cert?"</div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Rewritten</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded font-mono text-sm text-[#E2E8F0]">"How to configure SSL certificate"</div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Expanded Variants</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded font-mono text-sm text-[#E2E8F0] space-y-1">
+                                <div>1. "SSL certificate configuration guide"</div>
+                                <div>2. "Setting up SSL certificates"</div>
+                                <div>3. "TLS/SSL setup instructions"</div>
+                                <div>4. "Secure socket layer certificate howto"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-l-4 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Benefits</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-search-plus text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Higher Recall</p>
+                                <p class="text-sm text-[#A0AEC0]">Multiple variants cover more relevant documents</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-magic text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">User Transparency</p>
+                                <p class="text-sm text-[#A0AEC0]">Enhancements happen behind the scenes</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-bullseye text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Improved Precision</p>
+                                <p class="text-sm text-[#A0AEC0]">Better queries = more accurate results</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-language text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Language Flexibility</p>
+                                <p class="text-sm text-[#A0AEC0]">Handles informal and formal language</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 17: Hybrid Retrieval -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Hybrid Retrieval Strategy</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Mandatory Hybrid Approach</h3>
+                <p class="text-lg text-[#E2E8F0] leading-relaxed font-body">
+                    The system <strong class="text-[#4FD1C5]">must use hybrid retrieval</strong> combining vector similarity and keyword matching. <span class="bg-[#4FD1C5]/20" style="color: #4FD1C5;">Pure vector search alone is insufficient</span> for production systems.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-vector-square text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Vector Similarity Search</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Semantic search using embeddings to find conceptually similar content</p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <h4 class="text-base font-bold text-[#4FD1C5] mb-2 font-display">How It Works</h4>
+                        <div class="space-y-2 text-sm text-[#E2E8F0]">
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>Query embedded using agent's model</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>Cosine similarity with document vectors</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>Retrieves semantically related chunks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-search text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Keyword/Lexical Matching</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Exact term matching to catch specific keywords, IDs, and technical terms</p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <h4 class="text-base font-bold text-[#4FD1C5] mb-2 font-display">How It Works</h4>
+                        <div class="space-y-2 text-sm text-[#E2E8F0]">
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>Extract keywords from query</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>BM25 or TF-IDF scoring</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full mt-2"></div>
+                                <span>Matches exact terms and variants</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Weighted Result Fusion</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-[#4FD1C5] mb-2 font-display">α × Vector</div>
+                        <p class="text-sm text-[#A0AEC0]">Semantic similarity score</p>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <div class="text-3xl text-[#4FD1C5]">+</div>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-[#4FD1C5] mb-2 font-display">β × Keyword</div>
+                        <p class="text-sm text-[#A0AEC0]">Lexical match score</p>
+                    </div>
+                </div>
+                <p class="text-base text-center text-[#E2E8F0] mt-3 font-body">Weights α and β tuned for optimal performance</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Reranking -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Reranking & Cross-Encoder Models</h2>
+        </div>
+        <div class="grid grid-cols-5 gap-5">
+            <div class="col-span-3 space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Critical Reranking Step</h3>
+                    <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                        After retrieval, the top <strong class="text-[#4FD1C5]">10-20 candidates</strong> are reranked using cross-encoders to improve precision. This is a mandatory step for production quality.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-3 font-display">Why Reranking Matters</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-bullseye text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Higher Precision</p>
+                                    <p class="text-sm text-[#A0AEC0]">Cross-encoders deeply analyze query-chunk relevance</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-filter text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Quality Control</p>
+                                    <p class="text-sm text-[#A0AEC0]">Only high-confidence chunks reach the LLM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fas fa-shield-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                                <div>
+                                    <p class="text-base font-semibold text-[#E2E8F0]">Hallucination Prevention</p>
+                                    <p class="text-sm text-[#A0AEC0]">Reduces irrelevant context that causes hallucinations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Approved Rerankers</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-[#1A202C]/50 p-3 rounded-lg border-l-4 border-[#4FD1C5] text-center">
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display mb-1">bge-reranker</h4>
+                            <p class="text-sm text-[#A0AEC0]">Balanced performance</p>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded-lg border-l-4 border-[#A0AEC0] text-center">
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display mb-1">ms-marco</h4>
+                            <p class="text-sm text-[#A0AEC0]">Proven benchmark</p>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded-lg border-l-4 border-[#A0AEC0] text-center">
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display mb-1">colbert</h4>
+                            <p class="text-sm text-[#A0AEC0]">Late interaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-2 space-y-4">
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Quality Threshold</h3>
+                    <p class="text-base text-[#E2E8F0] font-body mb-3">
+                        Only <strong class="text-[#4FD1C5]">high-confidence chunks</strong> may reach the LLM. Low-relevance results are filtered out.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                        <div class="text-3xl font-bold text-[#4FD1C5] mb-1 font-display">Score ≥ θ</div>
+                        <p class="text-sm text-[#A0AEC0]">θ = minimum relevance threshold</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Reranking Process</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">1</div>
+                            <p class="text-sm text-[#E2E8F0]">Take top 10-20 retrieval candidates</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">2</div>
+                            <p class="text-sm text-[#E2E8F0]">Score each with cross-encoder</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">3</div>
+                            <p class="text-sm text-[#E2E8F0]">Reorder by relevance score</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">4</div>
+                            <p class="text-sm text-[#E2E8F0]">Filter by minimum threshold</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-sm shrink-0">5</div>
+                            <p class="text-sm text-[#E2E8F0]">Pass only high-confidence chunks to LLM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 19: Thresholding & Context Assembly -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Thresholding, Safety & Context Assembly</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="space-y-3">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Mandatory Safety Mechanisms</h3>
+                    <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                        The system <strong class="text-[#4FD1C5]">must discard low-similarity results</strong> to prevent hallucination. If no confident context exists, the system fails safely.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">Safe Failure Response</h4>
+                        <div class="bg-[#4A5568]/30 p-3 rounded font-mono text-sm text-[#4FD1C5]">"The information is not available in the provided knowledge base."</div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#4FD1C5]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Context Assembly Rules</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-tag text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Structured & Labeled:</strong> Each chunk includes source attribution</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-clone text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Deduplication:</strong> Redundant chunks are removed</p>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-compress-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <p class="text-base text-[#E2E8F0]"><strong>Size Enforcement:</strong> Maximum context size respected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30 flex flex-col">
+                <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Context Format Example</h3>
+                <div class="bg-[#1A202C]/50 p-4 rounded-lg font-mono text-sm text-[#E2E8F0] leading-normal flex-grow">
+                    <div class="text-[#4FD1C5] mb-2"># Retrieved Context</div>
+                    <div class="mb-3">[Source: User Guide – Billing]</div>
+                    <div class="text-[#A0AEC0] mb-3">To update your billing information, navigate to Account Settings → Billing → Payment Method. Click "Edit" to modify your credit card details...</div>
+                    <div class="mb-3">---</div>
+                    <div class="mb-3">[Source: FAQ – Subscription]</div>
+                    <div class="text-[#A0AEC0]">You can cancel your subscription at any time by going to Account Settings → Subscription → Cancel. Your access will continue until the end of the current billing period...</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 grid grid-cols-3 gap-4">
+            <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-shield-alt text-[#4FD1C5] text-xl"></i>
+                    <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Hallucination Prevention</h4>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body">Low-confidence results are discarded to prevent the LLM from inventing answers</p>
+            </div>
+            <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-link text-[#4FD1C5] text-xl"></i>
+                    <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Source Attribution</h4>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body">Every chunk includes its source, enabling traceability and verification</p>
+            </div>
+            <div class="bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-exclamation-triangle text-[#4FD1C5] text-xl"></i>
+                    <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Graceful Degradation</h4>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body">System fails safely when retrieval is insufficient</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 20: LLM Generation -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">LLM Generation & Approved Models</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Approved Ollama Chat Models</h3>
+                <p class="text-base text-[#E2E8F0] leading-relaxed mb-4 font-body">
+                    Only <strong class="text-[#4FD1C5]">proven open-source models</strong> available through Ollama are approved for production use.
+                </p>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">llama3.1</h4>
+                        <p class="text-sm text-[#A0AEC0] mb-2 font-body">Meta's flagship model, excellent reasoning</p>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-[#4FD1C5]/20 text-[#4FD1C5] rounded text-xs">Recommended</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">qwen2.5</h4>
+                        <p class="text-sm text-[#A0AEC0] mb-2 font-body">Alibaba's powerful multilingual model</p>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-[#A0AEC0]/20 text-[#A0AEC0] rounded text-xs">Multilingual</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">mistral-nemo</h4>
+                        <p class="text-sm text-[#A0AEC0] mb-2 font-body">Mistral AI's balanced performance model</p>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-[#A0AEC0]/20 text-[#A0AEC0] rounded text-xs">Balanced</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg border-l-4 border-[#A0AEC0]">
+                        <h4 class="text-lg font-bold text-[#E2E8F0] mb-2 font-display">phi-3.5</h4>
+                        <p class="text-sm text-[#A0AEC0] mb-2 font-body">Microsoft's compact, efficient model</p>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-[#A0AEC0]/20 text-[#A0AEC0] rounded text-xs">Efficient</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Prompt Rules</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-terminal text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">System Prompt Injection</p>
+                                <p class="text-sm text-[#A0AEC0]">Agent's system prompt is always injected</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-layer-group text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Context First</p>
+                                <p class="text-sm text-[#A0AEC0]">Retrieved context precedes user query</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-ban text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">No Invention</p>
+                                <p class="text-sm text-[#A0AEC0]">Instructed to never invent missing information</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-exclamation-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Explicit Unavailability</p>
+                                <p class="text-sm text-[#A0AEC0]">Must say when information is unavailable</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">LLM Instructions</h3>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg font-mono text-sm text-[#E2E8F0] leading-snug">
+                        <div class="text-[#4FD1C5] mb-2"># System Instructions</div>
+                        <div class="mb-2">You are a helpful assistant. Answer ONLY using the provided context below.</div>
+                        <div class="mb-2">If the context does not contain the answer, say: "The information is not available in the provided knowledge base."</div>
+                        <div class="mb-2">Never invent or assume information not explicitly stated.</div>
+                        <div class="text-[#4FD1C5] mt-3 mb-2"># Retrieved Context</div>
+                        <div class="text-[#A0AEC0]">[Context chunks here...]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Multilingual Support -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Multilingual Support Strategy</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Language-Agnostic Architecture</h3>
+                <p class="text-lg text-[#E2E8F0] leading-relaxed font-body">
+                    The system supports <strong class="text-[#4FD1C5]">multilingual input without translation</strong>, preserving language authenticity for accurate semantic retrieval. Queries are processed in their original language, and documents are embedded in their original language.
+                </p>
+            </div>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-language text-[#4FD1C5] text-2xl"></i>
+                        <h3 class="text-lg font-bold text-[#E2E8F0] font-display">Embedding Support</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Models like bge-m3 support 100+ languages</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <div class="text-2xl font-bold text-[#4FD1C5] text-center font-display">100+</div>
+                        <p class="text-sm text-[#A0AEC0] text-center">Languages</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-file-alt text-[#4FD1C5] text-2xl"></i>
+                        <h3 class="text-lg font-bold text-[#E2E8F0] font-display">Document Processing</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Documents embedded in original language</p>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>No translation</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>Preserve semantics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-search text-[#4FD1C5] text-2xl"></i>
+                        <h3 class="text-lg font-bold text-[#E2E8F0] font-display">Query Processing</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Queries processed in original language</p>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>No translation</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>Cross-lingual search</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-4 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fas fa-globe text-[#4FD1C5] text-2xl"></i>
+                        <h3 class="text-lg font-bold text-[#E2E8F0] font-display">Agent Capability</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Mixed-language query support</p>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>English + Spanish</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-[#E2E8F0]">
+                            <div class="w-1.5 h-1.5 bg-[#4FD1C5] rounded-full"></div>
+                            <span>Code-switching</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Example: Multilingual Workflow</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Document (Spanish)</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded text-sm text-[#E2E8F0]">"Cómo configurar el servidor..."</div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Query (English)</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded text-sm text-[#E2E8F0]">"How to configure server"</div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-[#4FD1C5] mb-1">Result</p>
+                            <div class="bg-[#1A202C]/50 p-3 rounded text-sm text-[#E2E8F0]">Cross-lingual retrieval returns Spanish document</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-l-4 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Design Principles</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-ban text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">No Translation</p>
+                                <p class="text-sm text-[#A0AEC0]">Preserves semantic accuracy</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-crosshairs text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Authentic Retrieval</p>
+                                <p class="text-sm text-[#A0AEC0]">Original language embeddings</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-users text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Global Accessibility</p>
+                                <p class="text-sm text-[#A0AEC0]">Supports diverse user bases</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 22: File Deletion -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">RAG PIPELINE IMPLEMENTATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">File Deletion & RAG Integrity</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Three-Step Deletion Process</h3>
+                <p class="text-lg text-[#E2E8F0] leading-relaxed font-body">
+                    When a file is deleted, the system follows a <strong class="text-[#4FD1C5]">strict three-step process</strong> to ensure <span class="bg-[#4FD1C5]/20" style="color: #4FD1C5;">zero orphan vectors</span> and maintain RAG integrity.
+                </p>
+            </div>
+            <div class="grid grid-cols-3 gap-5">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display">1</div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Mark as Deleted</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">File metadata is marked as deleted in MongoDB for audit trail and compliance</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm font-mono text-[#4FD1C5]">is_deleted: true</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display">2</div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Remove Vectors</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">All vectors are removed from Qdrant using file_id filter</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm font-mono text-[#4FD1C5]">filter: { file_id: $id }</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 bg-[#4FD1C5] rounded-full flex items-center justify-center text-[#1A202C] font-bold text-2xl font-display">3</div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Preserve Metadata</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">File metadata is retained for audit, compliance, and historical tracking</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm font-mono text-[#4FD1C5]">retained: forever</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Benefits of This Approach</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-shield-alt text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">No Orphan Vectors</p>
+                                <p class="text-sm text-[#A0AEC0]">Complete cleanup prevents vector space pollution</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-history text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Audit Trail</p>
+                                <p class="text-sm text-[#A0AEC0]">Metadata preserved for compliance</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-undo text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Recoverable</p>
+                                <p class="text-sm text-[#A0AEC0]">Soft delete enables restoration if needed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-l-4 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Zero Orphan Vector Policy</h3>
+                    <p class="text-base text-[#E2E8F0] font-body mb-3">
+                        <strong>Critical Requirement:</strong> No vectors may exist in Qdrant without corresponding metadata in MongoDB. This ensures consistency and prevents ghost retrievals.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm text-[#A0AEC0] font-body">Regular audits verify integrity between MongoDB and Qdrant</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 23: Security & Isolation -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">SECURITY & ISOLATION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Security, Isolation & Rate Limiting</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Security Mechanisms</h3>
+                <div class="space-y-3">
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-key text-[#4FD1C5] text-xl"></i>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">API Key Validation</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Validation occurs before any processing begins. Invalid or revoked keys are rejected immediately.</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-shield-alt text-[#4FD1C5] text-xl"></i>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Agent Isolation</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Complete isolation at the retrieval layer ensures one agent's data is never accessible to another.</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-ban text-[#4FD1C5] text-xl"></i>
+                            <h4 class="text-lg font-bold text-[#E2E8F0] font-display">Disabled Agent Rejection</h4>
+                        </div>
+                        <p class="text-base text-[#A0AEC0] font-body">Requests for disabled agents are rejected at the gateway level.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Rate Limiting</h3>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Rate limiting enforced per API key to ensure fair usage and system stability</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                            <div class="text-2xl font-bold text-[#4FD1C5] font-display">RPS</div>
+                            <p class="text-sm text-[#A0AEC0] mt-1">Requests per second</p>
+                        </div>
+                        <div class="bg-[#1A202C]/50 p-3 rounded text-center">
+                            <div class="text-2xl font-bold text-[#4FD1C5] font-display">RPM</div>
+                            <p class="text-sm text-[#A0AEC0] mt-1">Requests per minute</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-l-4 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Multi-Tenancy Security</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Data Privacy</p>
+                                <p class="text-sm text-[#A0AEC0]">Agent data completely isolated</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Access Control</p>
+                                <p class="text-sm text-[#A0AEC0]">API keys scoped to single agent</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Audit Trail</p>
+                                <p class="text-sm text-[#A0AEC0]">All requests logged with key attribution</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+            <p class="text-base text-[#E2E8F0] font-body">
+                <strong class="text-[#4FD1C5]">Security by Design:</strong> All security measures are enforced at multiple layers, from API gateway to data access, ensuring defense in depth and maintaining tenant isolation under all conditions.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 24: Non-Goals -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">PROJECT BOUNDARIES</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Non-Goals & Explicit Exclusions</h2>
+        </div>
+        <p class="text-lg text-[#A0AEC0] mb-5 font-body">
+            To maintain focus on the core RAG architecture, the following are <strong class="text-[#E2E8F0]">explicitly out of scope</strong>:
+        </p>
+        <div class="grid grid-cols-2 gap-5 mb-5">
+            <div class="bg-[#4A5568]/20 p-6 rounded-lg border-2 border-[#4FD1C5]">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-ban text-[#1A202C] text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-[#E2E8F0] font-display">No Proprietary Models</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body mb-3">Zero dependency on commercial AI services:</p>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2 bg-[#1A202C]/50 p-3 rounded">
+                        <i class="fas fa-times text-[#4FD1C5]"></i>
+                        <span class="text-base text-[#E2E8F0]">No OpenAI / GPT models</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-[#1A202C]/50 p-3 rounded">
+                        <i class="fas fa-times text-[#4FD1C5]"></i>
+                        <span class="text-base text-[#E2E8F0]">No Anthropic / Claude models</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-[#1A202C]/50 p-3 rounded">
+                        <i class="fas fa-times text-[#4FD1C5]"></i>
+                        <span class="text-base text-[#E2E8F0]">No Google / Gemini models</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-[#1A202C] text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">No Fine-Tuning</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body">Focus on retrieval quality over model customization. No training pipelines or model adaptation.</p>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-desktop text-[#1A202C] text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">No UI or Frontend</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body">Pure backend API service. No web interface, mobile app, or desktop client.</p>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user text-[#1A202C] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">No User Login System</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body">API key authentication only. No user accounts, passwords, or user management interface.</p>
+            </div>
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lock text-[#1A202C] text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#E2E8F0] font-display">No Cross-Agent Access</h3>
+                </div>
+                <p class="text-base text-[#A0AEC0] font-body">Complete isolation enforced. No data sharing or cross-referencing between agents.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 25: Quality Bar -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">QUALITY ASSURANCE</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Quality Bar & Success Criteria</h2>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-3 font-display">Quality Standards</h3>
+                <p class="text-lg text-[#E2E8F0] leading-relaxed font-body">
+                    The system must meet <strong class="text-[#4FD1C5]">rigorous quality standards</strong> for production deployment. <span class="bg-[#4FD1C5]/20" style="color: #4FD1C5;">Retrieval-first architecture</span> where generation quality is secondary to retrieval correctness.
+                </p>
+            </div>
+            <div class="grid grid-cols-3 gap-5">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-bullseye text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Accuracy</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Return accurate answers grounded in documents</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm text-[#4FD1C5] font-semibold">✓ Factually grounded responses</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-question-circle text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Humility</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Say "I don't know" when information is unavailable</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm text-[#4FD1C5] font-semibold">✓ Graceful degradation</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-[#4FD1C5] rounded-lg flex items-center justify-center">
+                            <i class="fas fa-expand-arrows-alt text-[#1A202C] text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#E2E8F0] font-display">Scalability</h3>
+                    </div>
+                    <p class="text-base text-[#A0AEC0] font-body mb-3">Scale to many agents without performance degradation</p>
+                    <div class="bg-[#1A202C]/50 p-3 rounded">
+                        <p class="text-sm text-[#4FD1C5] font-semibold">✓ Linear performance scaling</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Deterministic & Debuggable</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-code text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Reproducible Results</p>
+                                <p class="text-sm text-[#A0AEC0]">Same query → same results</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-bug text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Full Traceability</p>
+                                <p class="text-sm text-[#A0AEC0]">Complete audit trail for debugging</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">Open Source & Reproducible</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-code-branch text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">100% Open Source</p>
+                                <p class="text-sm text-[#A0AEC0]">All components freely available</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-docker text-[#4FD1C5] mt-1 shrink-0"></i>
+                            <div>
+                                <p class="text-base font-semibold text-[#E2E8F0]">Containerized</p>
+                                <p class="text-sm text-[#A0AEC0]">Reproducible deployments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 26: Deliverables -->
+    <div class="ppt-slide !bg-[#1A202C]" type="content">
+        <div class="mb-5">
+            <p class="text-base font-semibold tracking-wider text-[#4FD1C5] mb-2 font-caption">PROJECT COMPLETION</p>
+            <h2 class="text-4xl font-bold text-[#E2E8F0] font-display">Final Deliverables & Architecture Principle</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-5">
+            <div class="bg-[#4A5568]/20 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                <h3 class="text-2xl font-bold text-[#4FD1C5] mb-4 font-display">Complete Deliverable Package</h3>
+                <div class="space-y-3">
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-server text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">FastAPI Backend</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Full REST API with all described endpoints and middleware</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-database text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">MongoDB Schema</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Complete schema design with indexes and validation rules</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-vector-square text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Qdrant Integration</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Vector storage with agent-isolated collections</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-brain text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">Ollama Integration</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">LLM runtime with approved model support</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-search text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">High-Quality RAG Pipeline</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">All components: preprocessing, chunking, retrieval, reranking</p>
+                    </div>
+                    <div class="bg-[#1A202C]/50 p-3 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-key text-[#4FD1C5]"></i>
+                            <h4 class="text-base font-bold text-[#E2E8F0] font-display">API Key Authentication</h4>
+                        </div>
+                        <p class="text-sm text-[#A0AEC0] font-body">Hashed key management with middleware</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-[#4FD1C5]/10 p-5 rounded-lg border-2 border-[#4FD1C5]">
+                    <h3 class="text-xl font-bold text-[#4FD1C5] mb-3 font-display">Core Architecture Principle</h3>
+                    <p class="text-lg text-[#E2E8F0] leading-relaxed mb-3 font-body">
+                        <strong class="text-[#4FD1C5]">Retrieval-First Architecture:</strong> The system prioritizes retrieval quality above all else.
+                    </p>
+                    <div class="bg-[#1A202C]/50 p-4 rounded-lg">
+                        <p class="text-base text-[#A0AEC0] font-body mb-2"><strong class="text-[#E2E8F0]">If retrieval fails, the system must fail safely.</strong></p>
+                        <p class="text-sm text-[#A0AEC0] font-body">Generation quality is secondary to retrieval correctness. No confident context → safe failure response.</p>
+                    </div>
+                </div>
+                <div class="bg-[#4A5568]/20 p-5 rounded-lg border border-[#A0AEC0]/30">
+                    <h3 class="text-xl font-bold text-[#E2E8F0] mb-3 font-display">File Lifecycle Management</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-upload text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Upload → Preprocess → Chunk → Embed</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-search text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Query → Retrieve → Rerank → Generate</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-trash-alt text-[#4FD1C5]"></i>
+                            <span class="text-base text-[#E2E8F0]">Delete → Clean vectors → Preserve metadata</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 bg-[#4FD1C5]/10 p-4 rounded-lg border-l-4 border-[#4FD1C5]">
+            <p class="text-base text-[#E2E8F0] font-body">
+                <strong class="text-[#4FD1C5]">Final Instruction:</strong> Build this system as a retrieval-first architecture. If retrieval fails, the system must fail safely. Generation quality is secondary to retrieval correctness.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 27: Final -->
+    <div class="ppt-slide !bg-[#1A202C]" type="final">
+        <img src="cover_image.png" alt="Final" class="absolute inset-0 w-full h-full object-cover opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1A202C]/95 via-[#1A202C]/85 to-[#4A5568]/70"></div>
+        <div class="relative h-full flex flex-col justify-center items-center text-center z-10">
+            <div class="mb-8">
+                <div class="inline-block px-8 py-3 bg-[#4FD1C5]/20 border-2 border-[#4FD1C5] rounded-full mb-8">
+                    <span class="text-[#4FD1C5] font-caption text-2xl font-bold tracking-widest">ARCHITECTURE VISION</span>
+                </div>
+            </div>
+            <h1 class="text-6xl font-bold text-[#E2E8F0] mb-8 leading-tight font-display">
+                Building the Future of<br/>Open-Source RAG
+            </h1>
+            <div class="w-32 h-1 bg-[#4FD1C5] mx-auto mb-8"></div>
+            <div class="grid grid-cols-3 gap-8 max-w-5xl mx-auto mb-8">
+                <div class="bg-[#4A5568]/30 p-6 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="text-5xl font-bold text-[#4FD1C5] mb-3 font-display">Retrieval-First</div>
+                    <p class="text-lg text-[#E2E8F0] font-body">Quality over generation</p>
+                </div>
+                <div class="bg-[#4A5568]/30 p-6 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="text-5xl font-bold text-[#4FD1C5] mb-3 font-display">Open-Source</div>
+                    <p class="text-lg text-[#E2E8F0] font-body">100% transparent</p>
+                </div>
+                <div class="bg-[#4A5568]/30 p-6 rounded-lg border border-[#4FD1C5]/30">
+                    <div class="text-5xl font-bold text-[#4FD1C5] mb-3 font-display">Production-Grade</div>
+                    <p class="text-lg text-[#E2E8F0] font-body">Enterprise ready</p>
+                </div>
+            </div>
+            <p class="text-2xl text-[#A0AEC0] font-body max-w-4xl">
+                A robust foundation for intelligent information retrieval<br/>
+                <span class="text-[#4FD1C5] font-semibold">Retrieval quality first. Factual grounding always. Zero compromise on isolation.</span>
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "pages": [
+    {
+      "number": 1,
+      "type": "cover",
+      "title": "State-of-the-Art Open-Source Multi-Agent RAG System",
+      "content": "Production-Grade Retrieval-Augmented Generation Architecture"
+    },
+    {
+      "number": 2,
+      "type": "table_of_contents",
+      "title": "System Overview",
+      "content": "1. System Objective & Constraints; 2. Core Architecture & Domain Concepts; 3. Data Layer Design; 4. RAG Pipeline Implementation; 5. Quality Assurance & Deliverables"
+    },
+    {
+      "number": 3,
+      "type": "chapter",
+      "title": "01: System Foundation",
+      "content": "Defining objectives, constraints, and architectural principles"
+    },
+    {
+      "number": 4,
+      "type": "content",
+      "title": "System Objective & Core Purpose",
+      "content": "This page presents the fundamental goal of building a production-grade, multi-agent, multi-tenant RAG system using exclusively open-source technologies. It covers the key capabilities including multiple isolated agents, shared local LLM runtime, high-precision semantic search, multilingual understanding, and zero paid APIs. The page emphasizes the design priority of retrieval quality, factual grounding, and isolation over raw generation capabilities."
+    },
+    {
+      "number": 5,
+      "type": "content",
+      "title": "Hard Constraints & Technology Stack",
+      "content": "This page outlines the non-negotiable technical constraints that define the system architecture. It specifies the exact technology stack: FastAPI for backend, MongoDB for database, Qdrant for vector storage, Ollama for LLM runtime, open-source embedding models only, hashed API keys for authentication, and strict requirements for stateless API services with no SaaS AI providers or fine-tuning pipelines."
+    },
+    {
+      "number": 6,
+      "type": "chapter",
+      "title": "02: Architecture & Domain Design",
+      "content": "System flow, core concepts, and component relationships"
+    },
+    {
+      "number": 7,
+      "type": "content",
+      "title": "High-Level System Architecture",
+      "content": "This page presents the complete system flow from client request to LLM response, visualizing the journey through FastAPI Gateway, Agent Resolver, Query Understanding, Semantic and Hybrid Retrieval, Reranking, Context Assembly, and final LLM Generation via Ollama. The page emphasizes the modular, pipeline-oriented design that enables high-quality retrieval and generation."
+    },
+    {
+      "number": 8,
+      "type": "content",
+      "title": "Core Domain Concepts: Agent & API Keys",
+      "content": "This page details the Agent concept representing a business-specific chatbot with strict role definition, model configuration, isolated knowledge base, and multiple API keys. It explains the API key management strategy including secure hashing, one-to-many relationships with agents, soft-delete lifecycle, and revocation mechanisms that ensure complete isolation between agents."
+    },
+    {
+      "number": 9,
+      "type": "content",
+      "title": "RAG Documents & Knowledge Isolation",
+      "content": "This page explains the document management strategy where each document belongs to exactly one agent, ensuring complete retrieval layer isolation. It covers document chunking, embedding, vector storage in Qdrant, safe deletion mechanisms that remove vectors while preserving metadata, and the prevention of orphan vectors in the system."
+    },
+    {
+      "number": 10,
+      "type": "chapter",
+      "title": "03: Data Layer Design",
+      "content": "MongoDB schema, Qdrant strategy, and vector management"
+    },
+    {
+      "number": 11,
+      "type": "content",
+      "title": "MongoDB Schema: Collections & Structure",
+      "content": "This page presents the three core MongoDB collections: agents (identity, metadata, model configuration, prompt configuration, RAG behavior settings), api_keys (secure hashed authentication, agent scoping, soft-delete lifecycle), and files (RAG document metadata, chunk tracking, deletion lifecycle, vector space mapping). The page emphasizes the schema design that enables multi-tenancy and complete agent isolation."
+    },
+    {
+      "number": 12,
+      "type": "content",
+      "title": "Qdrant Vector Database Strategy",
+      "content": "This page details the vector storage approach using one collection per agent with naming convention rag_agent_<agent_id>. It specifies the required vector payload structure including agent_id, file_id, chunk_index, section headings, and source filename. The page explains how this strategy ensures agent isolation and enables efficient vector management during document operations."
+    },
+    {
+      "number": 13,
+      "type": "chapter",
+      "title": "04: RAG Pipeline Implementation",
+      "content": "Semantic search, preprocessing, chunking, and retrieval"
+    },
+    {
+      "number": 14,
+      "type": "content",
+      "title": "Embedding Models & Quality Standards",
+      "content": "This page presents the approved high-quality open-source embedding models: nomic-embed-text (default), bge-m3 (multilingual), e5-large, and gte-large. It establishes the strict rule that chat models must never be used for embeddings, embedding models must be configurable per agent, and all embeddings must be normalized to ensure consistent similarity calculations."
+    },
+    {
+      "number": 15,
+      "type": "content",
+      "title": "Text Preprocessing & Semantic Chunking",
+      "content": "This page covers the mandatory preprocessing steps including whitespace normalization, preservation of headings and lists, boilerplate noise removal, and retention of semantic structure. It details the meaning-aware chunking strategy that prioritizes section headers, paragraphs, and lists over fixed-size windows, with constraints of 200-400 tokens per chunk and 20-40 token overlap."
+    },
+    {
+      "number": 16,
+      "type": "content",
+      "title": "Query Understanding & Expansion",
+      "content": "This page explains the query enhancement process that happens before retrieval, including automatic query rewriting for clarity, expansion into 2-4 semantic variants, and normalization of abbreviations and synonyms. The page emphasizes how this step improves recall without user awareness, contributing to higher-quality retrieval results."
+    },
+    {
+      "number": 17,
+      "type": "content",
+      "title": "Hybrid Retrieval Strategy",
+      "content": "This page details the mandatory hybrid retrieval approach that combines vector similarity search with keyword or lexical matching, using weighted result fusion to achieve higher precision than either method alone. The page explains why pure vector search is insufficient for production systems and how hybrid retrieval ensures comprehensive coverage of relevant documents."
+    },
+    {
+      "number": 18,
+      "type": "content",
+      "title": "Reranking & Cross-Encoder Models",
+      "content": "This page presents the critical reranking step that takes the top 10-20 retrieval candidates and reorders them using cross-encoder models. It lists the approved rerankers: bge-reranker, cross-encoder/ms-marco, and colbert. The page emphasizes that only high-confidence chunks may reach the LLM, ensuring context quality and preventing hallucination."
+    },
+    {
+      "number": 19,
+      "type": "content",
+      "title": "Thresholding, Safety & Context Assembly",
+      "content": "This page covers the mandatory safety mechanisms including discarding low-similarity results and responding with 'The information is not available in the provided knowledge base' when no confident context exists. It details context assembly rules requiring structured, labeled chunks with source attribution, deduplication, and maximum context size enforcement to maintain response quality."
+    },
+    {
+      "number": 20,
+      "type": "content",
+      "title": "LLM Generation & Approved Models",
+      "content": "This page specifies the approved Ollama chat models: llama3.1, qwen2.5, mistral-nemo, and phi-3.5. It establishes prompt rules requiring system prompt injection, retrieved context preceding user queries, and explicit instructions for the model to answer only from context, never invent missing information, and explicitly state when information is unavailable."
+    },
+    {
+      "number": 21,
+      "type": "content",
+      "title": "Multilingual Support Strategy",
+      "content": "This page explains the multilingual requirements including embedding support for multilingual input, document embedding in original languages without translation, query processing without translation unless retrieval fails, and agent capability to handle mixed-language queries. The page emphasizes the importance of preserving language authenticity for accurate semantic retrieval."
+    },
+    {
+      "number": 22,
+      "type": "content",
+      "title": "File Deletion & RAG Integrity",
+      "content": "This page details the three-step deletion process: marking files as deleted in MongoDB, removing vectors from Qdrant using file_id, and preserving metadata for audit purposes. The page emphasizes the zero-orphan-vector policy and explains how this ensures RAG integrity and prevents pollution of the vector space over time."
+    },
+    {
+      "number": 23,
+      "type": "content",
+      "title": "Security, Isolation & Rate Limiting",
+      "content": "This page covers the security mechanisms including API key validation before processing, complete agent isolation at the retrieval layer, rejection of requests for disabled agents, and rate limiting enforcement per API key. The page emphasizes how these measures ensure multi-tenancy security and system stability in production environments."
+    },
+    {
+      "number": 24,
+      "type": "content",
+      "title": "Non-Goals & Explicit Exclusions",
+      "content": "This page clearly defines what is out of scope for the system: no OpenAI/Anthropic/Gemini or other proprietary models, no fine-tuning pipelines, no UI or frontend development, no user login system, and no cross-agent data access. The page establishes these boundaries to maintain focus on the core RAG architecture and open-source principles."
+    },
+    {
+      "number": 25,
+      "type": "content",
+      "title": "Quality Bar & Success Criteria",
+      "content": "This page establishes the quality standards the system must meet: returning accurate answers grounded in documents, saying 'I don't know' when appropriate, scaling to many agents without performance degradation, remaining deterministic and debuggable, and being fully open-source and reproducible. The page emphasizes retrieval-first architecture where generation quality is secondary to retrieval correctness."
+    },
+    {
+      "number": 26,
+      "type": "content",
+      "title": "Final Deliverables & Architecture Principle",
+      "content": "This page summarizes the complete deliverable package: FastAPI backend with full RAG pipeline, MongoDB schema and indexes, Qdrant integration, Ollama integration, high-quality RAG pipeline with all described components, API key authentication middleware, and complete file lifecycle management. The page reiterates the final instruction to build this as a retrieval-first architecture that fails safely if retrieval fails."
+    },
+    {
+      "number": 27,
+      "type": "final",
+      "title": "Building the Future of Open-Source RAG",
+      "content": "Retrieval-first. Open-source. Production-grade."
+    }
+  ]
+}
