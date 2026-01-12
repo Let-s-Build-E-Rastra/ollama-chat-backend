@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form, Q
 from app.db.mongodb import mongodb
 from app.db.qdrant import qdrant_db
 from app.models.agent import Agent
-from app.models.file import File, FileResponse
+from app.models.file import File, FileCreate, FileResponse
 from app.rag.preprocessor import TextPreprocessor
 from app.rag.chunker import TextChunker
 from app.rag.embedder import embedder
@@ -29,7 +29,7 @@ async def upload_file(
             status_code=404,
             detail="Agent not found or inactive"
         )
-    
+
     # Check file size
     content = await file.read()
     if len(content) > settings.max_upload_size:
@@ -37,8 +37,8 @@ async def upload_file(
             status_code=413,
             detail=f"File too large. Maximum size: {settings.max_upload_size} bytes"
         )
-    
-    # Create file record
+
+    # Create file record in MongoDB
     file_record = await mongodb.create_file(
         FileCreate(
             agent_id=agent_id,
@@ -47,39 +47,34 @@ async def upload_file(
             size=len(content)
         )
     )
-    
-    # Process file
+
     try:
-        # Preprocess content
+        # Preprocess file content
         text_content = preprocessor.preprocess_file_content(
             content,
             file.filename
         )
-        
-        # Create chunker
+
+        # Create chunker and generate chunks
         chunker = TextChunker(
             chunk_size=settings.default_chunk_size,
             chunk_overlap=settings.default_chunk_overlap
         )
-        
-        # Create chunks
         chunks = chunker.semantic_chunk(text_content, source=file.filename)
-        
-        # Extract chunk contents
         chunk_contents = [chunk.content for chunk in chunks]
-        
+
         # Generate embeddings
         embeddings = await embedder.get_embeddings_batch(
             chunk_contents,
             agent.embedding_model
         )
-        
+
         # Filter out failed embeddings
         valid_chunks = []
         valid_embeddings = []
         valid_payloads = []
-        
-        for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+
+        for chunk, embedding in zip(chunks, embeddings):
             if embedding:
                 valid_chunks.append(chunk)
                 valid_embeddings.append(embedding)
@@ -87,13 +82,13 @@ async def upload_file(
                     "section": chunk.section or "",
                     "source": chunk.source or file.filename
                 })
-        
+
         if not valid_embeddings:
             raise HTTPException(
                 status_code=500,
                 detail="Failed to generate embeddings for any chunks"
             )
-        
+
         # Store vectors in Qdrant
         success = await qdrant_db.upsert_vectors(
             agent_id=agent_id,
@@ -102,19 +97,16 @@ async def upload_file(
             payloads=valid_payloads,
             chunk_indices=list(range(len(valid_chunks)))
         )
-        
+
         if not success:
             raise HTTPException(
                 status_code=500,
                 detail="Failed to store vectors in Qdrant"
             )
-        
+
         # Update file record with chunk count
-        await mongodb.update_file_chunk_count(
-            str(file_record.id),
-            len(valid_chunks)
-        )
-        
+        await mongodb.update_file_chunk_count(str(file_record.id), len(valid_chunks))
+
         return {
             "message": "File uploaded and indexed successfully",
             "file_id": str(file_record.id),
@@ -122,9 +114,9 @@ async def upload_file(
             "chunks_created": len(valid_chunks),
             "agent_id": agent_id
         }
-        
+
     except Exception as e:
-        # Clean up on error
+        # Rollback on error
         await mongodb.mark_file_deleted(str(file_record.id))
         raise HTTPException(
             status_code=500,
@@ -142,7 +134,6 @@ async def list_files(
 ):
     """List files"""
     if agent_id:
-        # If agent_id specified, verify access
         agent = await mongodb.get_active_agent(agent_id)
         if not agent:
             raise HTTPException(
@@ -151,12 +142,8 @@ async def list_files(
             )
         files = await mongodb.list_files_by_agent(agent_id, include_deleted)
     else:
-        # List files for current agent
-        files = await mongodb.list_files_by_agent(
-            str(current_agent.id),
-            include_deleted
-        )
-    
+        files = await mongodb.list_files_by_agent(str(current_agent.id), include_deleted)
+
     return [FileResponse(**file.model_dump()) for file in files]
 
 
@@ -168,18 +155,11 @@ async def get_file(
     """Get file by ID"""
     file_record = await mongodb.get_file(file_id)
     if not file_record:
-        raise HTTPException(
-            status_code=404,
-            detail="File not found"
-        )
-    
-    # Verify access to this file
+        raise HTTPException(status_code=404, detail="File not found")
+
     if str(current_agent.id) != file_record.agent_id:
-        raise HTTPException(
-            status_code=403,
-            detail="Access denied to this file"
-        )
-    
+        raise HTTPException(status_code=403, detail="Access denied to this file")
+
     return FileResponse(**file_record.model_dump())
 
 
@@ -188,36 +168,23 @@ async def delete_file(
     file_id: str,
     current_agent: Agent = Depends(None)
 ):
-    """Delete a file (soft delete with vector cleanup)"""
+    """Soft delete a file and remove vectors from Qdrant"""
     file_record = await mongodb.get_file(file_id)
     if not file_record:
-        raise HTTPException(
-            status_code=404,
-            detail="File not found"
-        )
-    
-    # Verify access
+        raise HTTPException(status_code=404, detail="File not found")
+
     if str(current_agent.id) != file_record.agent_id:
-        raise HTTPException(
-            status_code=403,
-            detail="Access denied to this file"
-        )
-    
-    # Delete vectors from Qdrant
+        raise HTTPException(status_code=403, detail="Access denied to this file")
+
     success = await qdrant_db.delete_vectors_by_file(
         agent_id=str(current_agent.id),
         file_id=file_id
     )
-    
     if not success:
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to delete vectors from Qdrant"
-        )
-    
-    # Mark file as deleted in MongoDB
+        raise HTTPException(status_code=500, detail="Failed to delete vectors from Qdrant")
+
     await mongodb.mark_file_deleted(file_id)
-    
+
     return {
         "message": "File deleted successfully",
         "file_id": file_id,
@@ -233,24 +200,16 @@ async def get_file_chunks(
     """Get chunk information for a file"""
     file_record = await mongodb.get_file(file_id)
     if not file_record:
-        raise HTTPException(
-            status_code=404,
-            detail="File not found"
-        )
-    
-    # Verify access
+        raise HTTPException(status_code=404, detail="File not found")
+
     if str(current_agent.id) != file_record.agent_id:
-        raise HTTPException(
-            status_code=403,
-            detail="Access denied to this file"
-        )
-    
-    # Count vectors in Qdrant
+        raise HTTPException(status_code=403, detail="Access denied to this file")
+
     vector_count = await qdrant_db.count_vectors_by_file(
         agent_id=str(current_agent.id),
         file_id=file_id
     )
-    
+
     return {
         "file_id": file_id,
         "filename": file_record.filename,
