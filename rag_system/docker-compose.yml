@@ -42,15 +42,9 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_ORIGINS=*
+      - OLLAMA_NUM_PARALLEL=1   # recommended for CPU
     networks:
       - rag_network
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
 
   # FastAPI Application
   app:
