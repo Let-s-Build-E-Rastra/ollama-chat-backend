@@ -53,13 +53,15 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    environment:
-      - MONGODB_URL=mongodb://admin:mongopass123@mongodb:27017/rag_system?authSource=admin
-      - QDRANT_URL=http://qdrant:6333
-      - OLLAMA_URL=http://ollama:11434
-      - SECRET_KEY=your-secret-key-here
-      - DEBUG=false
-      - LOG_LEVEL=INFO
+    # environment:
+    #   - MONGODB_URL=mongodb://admin:mongopass123@mongodb:27017/rag_system?authSource=admin
+    #   - QDRANT_URL=http://qdrant:6333
+    #   - OLLAMA_URL=http://ollama:11434
+    #   - SECRET_KEY=your-secret-key-here
+    #   - DEBUG=false
+    #   - LOG_LEVEL=INFO
+    env_file:
+      - .env
     volumes:
       - ./app:/app/app  # For development hot reload
       - ./logs:/app/logs
@@ -69,13 +71,8 @@ services:
       - ollama
     networks:
       - rag_network
-    command: >
-      sh -c "
-        python -m uvicorn app.main:app 
-        --host 0.0.0.0 
-        --port 8000 
-        --reload
-      "
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
 
   # Nginx Reverse Proxy (optional)
   nginx:
