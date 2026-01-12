@@ -4,12 +4,11 @@ from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form, Q
 from app.db.mongodb import mongodb
 from app.db.qdrant import qdrant_db
 from app.models.agent import Agent
-from app.models.file import File, FileCreate, FileResponse
+from app.models.file import File as FileModel, FileCreate, FileResponse
 from app.rag.preprocessor import TextPreprocessor
 from app.rag.chunker import TextChunker
 from app.rag.embedder import embedder
 from app.core.config import settings
-
 
 router = APIRouter()
 preprocessor = TextPreprocessor()
@@ -153,7 +152,7 @@ async def get_file(
     current_agent: Agent = Depends(None)
 ):
     """Get file by ID"""
-    file_record = await mongodb.get_file(file_id)
+    file_record: FileModel = await mongodb.get_file(file_id)
     if not file_record:
         raise HTTPException(status_code=404, detail="File not found")
 
@@ -169,7 +168,7 @@ async def delete_file(
     current_agent: Agent = Depends(None)
 ):
     """Soft delete a file and remove vectors from Qdrant"""
-    file_record = await mongodb.get_file(file_id)
+    file_record: FileModel = await mongodb.get_file(file_id)
     if not file_record:
         raise HTTPException(status_code=404, detail="File not found")
 
@@ -198,7 +197,7 @@ async def get_file_chunks(
     current_agent: Agent = Depends(None)
 ):
     """Get chunk information for a file"""
-    file_record = await mongodb.get_file(file_id)
+    file_record: FileModel = await mongodb.get_file(file_id)
     if not file_record:
         raise HTTPException(status_code=404, detail="File not found")
 
