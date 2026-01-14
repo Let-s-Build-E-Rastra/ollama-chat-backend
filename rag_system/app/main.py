@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from loguru import logger
@@ -52,66 +52,61 @@ app.add_middleware(
 # Security
 security = HTTPBearer()
 
-async def verify_api_key(credentials: HTTPAuthorizationCredentials):
+
+async def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Verify API key and return associated agent"""
     api_key = credentials.credentials
     
     # Hash the provided API key and check against stored hash
+    # For now, we'll use a simple lookup (in production, use proper hashing)
     api_key_record = await mongodb.get_api_key_by_hash(api_key)
     
     if not api_key_record:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key"
+        )
     
     if not api_key_record.is_active:
-        raise HTTPException(status_code=401, detail="API key is deactivated")
+        raise HTTPException(
+            status_code=401,
+            detail="API key is deactivated"
+        )
     
+    # Get associated agent
     agent = await mongodb.get_active_agent(api_key_record.agent_id)
     
     if not agent:
-        raise HTTPException(status_code=401, detail="Associated agent not found or inactive")
+        raise HTTPException(
+            status_code=401,
+            detail="Associated agent not found or inactive"
+        )
     
+    # Update last used timestamp
     await mongodb.update_api_key_last_used(api_key_record.id)
     
     return agent
-
-
-# Middleware for authorization
-EXEMPT_PATHS = ["/api/v1/agents"]  # paths that do NOT require API key
-
-@app.middleware("http")
-async def auth_middleware(request: Request, call_next):
-    if any(request.url.path.startswith(path) for path in EXEMPT_PATHS):
-        return await call_next(request)
-
-    # Require API key for all other paths
-    try:
-        credentials: HTTPAuthorizationCredentials = await security(request)
-        await verify_api_key(credentials)
-    except HTTPException as e:
-        return JSONResponse(status_code=e.status_code, content={"detail": e.detail})
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"detail": str(e)})
-
-    return await call_next(request)
 
 
 # Include routers
 app.include_router(
     agents.router,
     prefix="/api/v1/agents",
-    tags=["agents"]  # public
+    tags=["agents"],
 )
 
 app.include_router(
     files.router,
     prefix="/api/v1/files",
-    tags=["files"]  # protected by middleware
+    tags=["files"],
+    dependencies=[Depends(verify_api_key)]
 )
 
 app.include_router(
     chat.router,
     prefix="/api/v1/chat",
-    tags=["chat"]  # protected by middleware
+    tags=["chat"],
+    dependencies=[Depends(verify_api_key)]
 )
 
 
@@ -149,8 +144,6 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    from fastapi.responses import JSONResponse
-
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
